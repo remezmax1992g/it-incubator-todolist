@@ -1,4 +1,4 @@
-import React, {useState, KeyboardEvent} from 'react';
+import React, {useState, KeyboardEvent, ChangeEvent} from 'react';
 import {FilteredValuesType} from "./App";
 
 export type TaskType = {
@@ -30,7 +30,7 @@ const ToDoList = (props: ToDOListPropsType) => {
             }
     }
 
-    const onChangeSetTitle = (e:KeyboardEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
+    const onChangeSetTitle = (e:ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
 
     const getChangeFilterHandler = (filter: FilteredValuesType) => {
         return props.changeFiler(filter)
@@ -53,7 +53,7 @@ const ToDoList = (props: ToDOListPropsType) => {
             <div>
                 <input
                 value = {title}
-                onChangeCapture = {onChangeSetTitle}
+                onChange = {onChangeSetTitle}
                 onKeyDown = {onKeyAddTask}/>
 
                 <button onClick={onClickAddTask}>+</button>

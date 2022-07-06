@@ -17,6 +17,7 @@ function App() {
         {id: v1(), title: "Redux", isDone: false},
     ]
     const [tasks, setTasks] = useState(task_1);
+
     const removeTask1 = (taskID: string) => {
         setTasks(tasks.filter(task => task.id !== taskID));
     }
