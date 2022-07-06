@@ -59,7 +59,7 @@ function App() {
                       tasks={taskForRender}
                       removeTask={removeTask1}
                       changeFiler={changeFilter}
-                      addTasks={addTask}/>
+                      addTask={addTask}/>
             {/*<ToDoList title={title_2}
                       tasks={task_2}/
                 removeTask ={removeTask}/>*/}
