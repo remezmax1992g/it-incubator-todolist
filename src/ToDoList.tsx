@@ -1,78 +1,76 @@
-import React, {useState, KeyboardEvent, ChangeEvent} from 'react';
-import {FilteredValuesType} from "./App";
-import {Button} from "./components/Button";
-import {FullInput} from "./components/FullInput";
+import React, {ChangeEvent, useState} from 'react';
 import Input from "./components/Input";
+import Button from "./components/Button";
+import {FilteredValuesType} from "./App";
 
 export type TaskType = {
-    id: string;
-    title: string;
-    isDone: boolean;
+    id: string
+    title: string
+    isDone: boolean
 }
 
-type ToDOListPropsType = {
-    title: string;
-    tasks: Array<TaskType>;
-    removeTask: (taskID: string) => void;
-    changeFiler: (filter: FilteredValuesType) => void
-    addTask: (title: string) => void
+type ToDoListPropsType = {
+    //value
+    title: string
+    tasks: Array<TaskType>
+    filter: FilteredValuesType | undefined
+    //function
+    changeFilter: (filter: FilteredValuesType) => void
+    removeTask: (TaskID: string) => void
+    addTask: (titleInput: string) => void
+    changeStatusCheckBox: (taskID: string, isDone: boolean) => void
 }
 
-const ToDoList = (props: ToDOListPropsType) => {
-    const [title, setTitle] = useState()
-
-   const onClickAddTask = () => {
+const ToDoList = (props: ToDoListPropsType) => {
+    //state
+    const [title, setTitle] = useState<string>("")
+    const [error, setError] = useState<boolean>(false)
+    //function
+    const onClickAddTask = () => {
         props.addTask(title)
         setTitle("")
-
     }
-
-    /*const onKeyAddTask = (e:KeyboardEvent<HTMLInputElement>) => {
-            if(e.key === "Enter" && e.ctrlKey === true){
-                onClickAddTask()
-            }
-    }*/
-
-    /*const onChangeSetTitle = (e:ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)*/
-
     const getChangeFilterHandler = (filter: FilteredValuesType) => {
-        return props.changeFiler(filter)
+        return props.changeFilter(filter)
     }
-
-    const removeTask = (tID: string) => {props.removeTask(tID)};
-
-    const taskListItem = props.tasks.length ? props.tasks.map((tasks, index) => {
-
-            return (<li key={index}><input type="checkbox" checked={tasks.isDone}/>
-                    <span>{tasks.title}</span>
-                    <Button name={"X"} callBack={() => removeTask(tasks.id)}/>
-                </li>
-            )
-        })
-        : <span>Your taskList is empty</span>
-
+    const removeTask = (taskID: string) => {
+        props.removeTask(taskID)
+    }
+    //data
+    const taskListItem = props.tasks.length ? props.tasks.map((t, index) => {
+        const changeStatusCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
+            props.changeStatusCheckBox(t.id, event.currentTarget.checked)
+        }
+        return (<li key={index}><input type={"checkbox"}
+                                       checked={t.isDone}
+                                       onChange={changeStatusCheckbox}/>
+            <span className={t.isDone ? "isDone" : "isActive"}>{t.title}</span>
+            <Button nameButton={"X"} callBackOnClick={() => removeTask(t.id)} className={"buttonRemove"}/></li>)
+    }) : <span>Your task's list is empty</span>
+    //interface
     return (
         <div>
-            <h3>{props.title}</h3>
+            <h2>{props.title}</h2>
             <div>
-                <Input setTitle={setTitle} title={title} callBack={onClickAddTask}/>
-                <Button name={"+"} callBack={onClickAddTask}/>
-                {/*<FullInput callBack={props.addTask}/>*/}
-                {/*<input
-                value = {title}
-                onChange = {onChangeSetTitle}
-                onKeyDown = {onKeyAddTask}/>
-
-                <button onClick={onClickAddTask}>+</button>*/}
+                <Input className={"inputName"}
+                       title={title}
+                       error={error}
+                       callBackAddTitle={onClickAddTask}
+                       setTitle={setTitle}
+                       setError={setError}/>
+                <Button nameButton={"+"}
+                        callBackOnClick={onClickAddTask}
+                        className={"buttonInputName"}/>
+                {error && <div className={"error"}>You need to input task's title</div>}
+                <ul className={"taskListItem"}>{taskListItem}</ul>
             </div>
-            <ul>{taskListItem}</ul>
-            <div>
-                <Button name={"all"} callBack={() => getChangeFilterHandler("all")}/>
-                <Button name={"active"} callBack={() => getChangeFilterHandler("active")}/>
-                <Button name={"completed"} callBack={() => getChangeFilterHandler("completed")}/>
-                {/*<button onClick={() => getChangeFilterHandler("all")}>All</button>
-                <button onClick={() => getChangeFilterHandler("active")}>Active</button>
-                <button onClick={() => getChangeFilterHandler("completed")}>Completed</button>*/}
+            <div className={"filterButton"}>
+                <Button nameButton={"all"} callBackOnClick={() => getChangeFilterHandler("all")}
+                        className={props.filter === "all" ? "active" : ""}/>
+                <Button nameButton={"active"} callBackOnClick={() => getChangeFilterHandler("active")}
+                        className={props.filter === "active" ? "active" : ""}/>
+                <Button nameButton={"completed"} callBackOnClick={() => getChangeFilterHandler("completed")}
+                        className={props.filter === "completed" ? "active" : ""}/>
             </div>
         </div>
     );

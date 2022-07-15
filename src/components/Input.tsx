@@ -1,23 +1,40 @@
 import React, {ChangeEvent, KeyboardEvent} from 'react';
 
 type InputPropsType = {
-    setTitle: (title: string) => void,
-    title: string,
-    callBack: () => void
+    //value
+    className: string
+    title: string
+    error: boolean
+    //function
+    callBackAddTitle: () => void
+    setError: (error: boolean) => void
+    setTitle: (title: string) => void
+
+
 }
 
-export const Input = (props: InputPropsType) => {
-    const onChangeSetTitle = (e:ChangeEvent<HTMLInputElement>) => props.setTitle(e.currentTarget.value)
-    const onKeyAddTask = (e:KeyboardEvent<HTMLInputElement>) => {
-        if(e.key === "Enter" && e.ctrlKey === true){
-            props.callBack()
+const Input: React.FC<InputPropsType> = (props) => {
+    //function
+    const onChangeInputTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        let currentTitle = event.currentTarget.value.trim()
+        if (currentTitle) {
+            props.setTitle(currentTitle)
+            props.error && props.setError(false)
+        } else {
+            props.setError(true)
+            props.title && props.setTitle("")
         }
     }
+    const onKeyboardAddTask = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter" && event.ctrlKey === true) {
+            props.callBackAddTitle()
+        }
+    }
+    //Interface
     return (
         <span>
-            <input value = {props.title}
-                   onChange = {onChangeSetTitle}
-                   onKeyDown = {onKeyAddTask}/>
+            <input value={props.title} className={props.className} onChange={onChangeInputTitle}
+                   onKeyDown={onKeyboardAddTask}/>
         </span>
     );
 };
