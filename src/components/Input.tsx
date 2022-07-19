@@ -4,10 +4,8 @@ type InputPropsType = {
     //value
     className: string
     title: string
-    error: boolean
     //function
     callBackAddTitle: () => void
-    setError: (error: boolean) => void
     setTitle: (title: string) => void
 
 
@@ -17,26 +15,20 @@ const Input: React.FC<InputPropsType> = (props) => {
     //function
     const onChangeInputTitle = (event: ChangeEvent<HTMLInputElement>) => {
         let currentTitle = event.currentTarget.value.trim()
-        if (currentTitle) {
             props.setTitle(currentTitle)
-            props.error && props.setError(false)
-        } else {
-            props.setError(true)
-            props.title && props.setTitle("")
         }
-    }
-    const onKeyboardAddTask = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter" && event.ctrlKey === true) {
-            props.callBackAddTitle()
+        const onKeyboardAddTask = (event: KeyboardEvent<HTMLInputElement>) => {
+            if (event.key === "Enter" && event.ctrlKey === true) {
+                props.callBackAddTitle()
+            }
         }
-    }
-    //Interface
-    return (
-        <span>
+        //Interface
+        return (
+            <span>
             <input value={props.title} className={props.className} onChange={onChangeInputTitle}
                    onKeyDown={onKeyboardAddTask}/>
         </span>
-    );
-};
+        );
+    };
 
-export default Input;
+    export default Input;

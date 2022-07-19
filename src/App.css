@@ -1,6 +1,7 @@
 .App {
-    padding: 30px;
-    display: flex;
+    padding: 40px;
+    margin: 20px;
+    display: grid;
 }
 
 .App > div {
