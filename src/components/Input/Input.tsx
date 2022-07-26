@@ -7,14 +7,12 @@ type InputPropsType = {
     //function
     callBackAddTitle: () => void
     setTitle: (title: string) => void
-
-
 }
 
 const Input: React.FC<InputPropsType> = (props) => {
     //function
     const onChangeInputTitle = (event: ChangeEvent<HTMLInputElement>) => {
-        let currentTitle = event.currentTarget.value.trim()
+        let currentTitle = event.currentTarget.value
             props.setTitle(currentTitle)
         }
         const onKeyboardAddTask = (event: KeyboardEvent<HTMLInputElement>) => {
