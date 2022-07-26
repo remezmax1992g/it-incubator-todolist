@@ -1,6 +1,7 @@
 import React, {ChangeEvent} from 'react';
 import {TaskType} from "../../ToDoList";
 import Button from "../Button/Button";
+import EditableSpan from "../EditableSpan/EditableSpan";
 
 type TaskItemTypeProps ={
     //value
@@ -9,9 +10,17 @@ type TaskItemTypeProps ={
     //function
     changeStatusCheckBox: (todolistID: string, taskID: string, isDone: boolean) => void
     removeTask: (todolistID: string, taskID: string) => void
+    editTask:(todolistID: string, taskID: string, newTitle: string) => void
 }
 
 const TasksItem = (props: TaskItemTypeProps) => {
+    //function
+    const removeTask = (todolistID: string, taskID: string) => {
+        props.removeTask(todolistID, taskID)
+    }
+    const editTaskHandler = (taskID: string, newTitle: string) => {
+        props.editTask(props.todolistID,taskID, newTitle)
+    }
     //value
     const taskListItem = props.tasks.length ? props.tasks.map((t, index) => {
         const changeStatusCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
@@ -20,14 +29,12 @@ const TasksItem = (props: TaskItemTypeProps) => {
         return (<li key={index}><input type={"checkbox"}
                                        checked={t.isDone}
                                        onChange={changeStatusCheckbox}/>
-            <span className={t.isDone ? "isDone" : "isActive"}>{t.title}</span>
+           <EditableSpan title={t.title} isDone={t.isDone} onChange={(title) => editTaskHandler(t.id, title)}/>
             <Button nameButton={"X"} callBackOnClick={() => removeTask(props.todolistID, t.id)}
                     className={"buttonRemove"}/></li>)
     }) : <span>Your task's list is empty</span>
-    //function
-    const removeTask = (todolistID: string, taskID: string) => {
-        props.removeTask(todolistID, taskID)
-    }
+
+
     return (
         <span>
             <ul className={"taskListItem"}>{taskListItem}</ul>
