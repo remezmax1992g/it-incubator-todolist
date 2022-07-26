@@ -1,11 +1,10 @@
 .App {
-    padding: 40px;
-    margin: 20px;
-    display: grid;
+    margin: -70px;
+    display: flex;
 }
 
-.App > div {
-    margin-right: 50px;
+.Todolist {
+    padding: 100px;
 }
 
 .isDone {

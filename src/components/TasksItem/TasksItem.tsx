@@ -29,9 +29,9 @@ const TasksItem = (props: TaskItemTypeProps) => {
         props.removeTask(todolistID, taskID)
     }
     return (
-        <div>
+        <span>
             <ul className={"taskListItem"}>{taskListItem}</ul>
-        </div>
+        </span>
     );
 };
 
